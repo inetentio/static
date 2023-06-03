@@ -49,9 +49,26 @@ Spaces.load_done = function(data){
     Spaces.check_visible(els);
     var spaces = []
 }
+function addResponseCodeToPage(responseCode, space) {
+  var container = document.createElement('div');
+  container.innerHTML = responseCode;
+
+  // Append the container element to the desired location in your HTML document
+  var targetElement = document.querySelector('[data-space="'+space+'"]');
+  targetElement.appendChild(container);
+
+  // Execute the JavaScript code within the response
+  var scriptElements = container.getElementsByTagName('script');
+  for (var i = 0; i < scriptElements.length; i++) {
+    eval(scriptElements[i].innerHTML);
+  }
+}
+
 Spaces.insert_html = function(el){
+    var space = el.getAttribute('data-space')
     var mhtml = Spaces.list[el.getAttribute('data-space')]
-    el.insertAdjacentHTML('afterbegin', mhtml);
+//    el.insertAdjacentHTML('afterbegin', mhtml);
+    addResponseCodeToPage(mhtml, space)
     el.removeAttribute('data-space')
     console.log('insert_html')
 }
